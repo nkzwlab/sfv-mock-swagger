@@ -1,0 +1,8 @@
+xr-mock.jn.sfc.keio.ac.jp {
+    # 全リクエストを mock サービスへ転送
+    reverse_proxy mock:4010
+
+    # Let's Encrypt で自動的に証明書を取得
+    tls dang0@sfc.keio.ac.jp
+}
+

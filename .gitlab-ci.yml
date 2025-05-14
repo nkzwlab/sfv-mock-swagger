@@ -1,0 +1,22 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  only:
+    - main    # main ブランチへの push のみ実行
+
+  before_script:
+    # origin URL を HTTPS+Token 域付きに書き換え
+    - git remote set-url origin https://${DEPLOY_USER}:${DEPLOY_TOKEN}@gitlab.com/your_group/swagger-mock.git
+
+  script:
+    - cd /home/deploy/swagger-mock
+    # 強制的に最新コミットを反映（fetch + reset のほうが安全）
+    - git fetch origin main
+    - git reset --hard origin/main
+    # Docker Compose で mock サービスだけ再起動
+    - docker-compose restart mock
+
+  tags:
+    - shell

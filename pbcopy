@@ -1,0 +1,33 @@
+stages:
+  - deploy
+
+variables:
+  GIT_SUBMODULE_STRATEGY: none
+
+deploy:
+  stage: deploy
+  # main (または master) ブランチへの push のみ動かす
+  only:
+    - main
+
+  before_script:
+    # SSH 鍵を読み込んでエージェントに追加
+    - 'which ssh-agent || ( apt-get update && apt-get install -y openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    # GitLab Runner ホストの known_hosts 登録（初回のみホスト鍵を信頼）
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+  script:
+    # サーバー側で pull → コンテナ再起動
+    - ssh "$SSH_USER@$SSH_HOST" "
+        cd /home/deploy/swagger-mock &&
+        git pull origin main &&
+        docker-compose restart mock
+      "
+
+  # Runner 上で Docker を必要としないなら tags：[] も指定可能
+  tags:
+    - shell
+

@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  mock:
+    image: stoplight/prism:4
+    command:
+      - mock
+      - /spec/swagger.yaml
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "4010"
+    # ← ここでホストの4010をコンテナの4010にバインド
+    ports:
+      - "4010:4010"
+    # Swagger 定義をコンテナ内 /spec/swagger.yaml としてマウント
+    volumes:
+      - ./swagger.yaml:/spec/swagger.yaml:ro
+    restart: always
+
+  caddy:
+    image: caddy:2
+    # HTTP/HTTPS をそのまま公開
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: always
+
+volumes:
+  caddy_data:
+  caddy_config:
+
