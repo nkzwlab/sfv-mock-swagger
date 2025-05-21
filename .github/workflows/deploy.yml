@@ -15,14 +15,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-       # with:
-       #   repository: nkzwlab/xr-mock-swagger
-       #   path: xr-mock-swagger
+        # with:
+        #   repository: nkzwlab/xr-mock-swagger
+        #   path: xr-mock-swagger
 
       - name: Set up SSH key
         uses: webfactory/ssh-agent@v0.7.0
-        # with:
-        #   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no \
