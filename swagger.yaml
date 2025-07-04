@@ -40,6 +40,9 @@ paths:
                     name:
                       type: string
                       example: "Alice"
+                    time:
+                      type: integer
+                      example: 0
     post:
       summary: "Create a user"
       description: "Add a new user and return the created object"
@@ -51,10 +54,15 @@ paths:
               type: object
               required:
                 - name
+                # 必須にしたい場合は以下を有効化
+                # - time
               properties:
                 name:
                   type: string
                   example: "Bob"
+                time:
+                  type: integer
+                  example: 10
       responses:
         '201':
           description: "User created successfully"
@@ -69,6 +77,68 @@ paths:
                   name:
                     type: string
                     example: "Bob"
+                  time:
+                    type: integer
+                    example: 10
+  /points:
+    get:
+      summary: "List points"
+      description: "Retrieve a list of points"
+      responses:
+        '200':
+          description: "A JSON array of point objects"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "origin"
+                    time:
+                      type: integer
+                      example: 0
+    post:
+      summary: "Create a point"
+      description: "Add a new point and return the created object"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - time
+              properties:
+                name:
+                  type: string
+                  example: "kamoike"
+                time:
+                  type: integer
+                  example: 10
+      responses:
+        '201':
+          description: "Point created successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "kamoike"
+                  time:
+                    type: integer
+                    example: 10
 components:
   schemas:
     Error:
@@ -80,4 +150,3 @@ components:
         message:
           type: string
           example: "Bad request"
-
