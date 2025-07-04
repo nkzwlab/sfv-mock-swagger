@@ -102,7 +102,26 @@ paths:
                       example: "origin"
                     time:
                       type: integer
-                      example: 0
+                      example: 10
+              example:
+                - id: 1
+                  name: "origin"
+                  time: 10
+                - id: 2
+                  name: "kamoike"
+                  time: 20
+                - id: 3
+                  name: "sigma"
+                  time: 30
+                - id: 4
+                  name: "delta"
+                  time: 40
+                - id: 5
+                  name: "tau"
+                  time: 50
+                - id: 6
+                  name: "gamma"
+                  time: 60
     post:
       summary: "Create a point"
       description: "Add a new point and return the created object"
@@ -121,7 +140,7 @@ paths:
                   example: "kamoike"
                 time:
                   type: integer
-                  example: 10
+                  example: 20
       responses:
         '201':
           description: "Point created successfully"
@@ -138,7 +157,7 @@ paths:
                     example: "kamoike"
                   time:
                     type: integer
-                    example: 10
+                    example: 20
 components:
   schemas:
     Error:
